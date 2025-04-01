@@ -2,21 +2,21 @@ import React, { createContext, useContext, useState } from "react";
 
 // Data arrays (this can be moved to a separate file if needed)
 const dept = [
-    { "id": 1, "dname": "dept1" },
-    { "id": 2, "dname": "dept2" },
-    { "id": 3, "dname": "dept3" },
+    { "id": 1, "dname": "Frontend" },
+    { "id": 2, "dname": "Backend" },
+    { "id": 3, "dname": "AI" },
 ];
 
 const designation = [
-    { "id": 1, "dename": "post1" },
-    { "id": 2, "dename": "post2" },
-    { "id": 3, "dename": "post3" },
+    { "id": 1, "dename": "Fresher" },
+    { "id": 2, "dename": "Mid-Career" },
+    { "id": 3, "dename": "Advanced" },
 ];
 
 const tech_expertise = [
-    { "id": 1, "level": "level1" },
-    { "id": 2, "level": "level2" },
-    { "id": 3, "level": "level3" },
+    { "id": 1, "level": "Beginner" },
+    { "id": 2, "level": "Intermediate" },
+    { "id": 3, "level": "Proficient" },
 ];
 
 // Function to get a random element from an array
@@ -48,8 +48,9 @@ const StoreContext = createContext();
 export const StoreProvider = ({ children }) => {
     const [store, setStore] = useState(initialData);
 
+
     const delEmployee = (id) => {
-        const updatedData = store.data.filter(employee => employee.id != id);
+        const updatedData = store.data.filter(employee => employee.id !== id);
         setStore({ ...store, data: updatedData });
     }
 

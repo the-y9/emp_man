@@ -1,20 +1,27 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import { useStore } from '../store/data';
 
 
 function Display() {
-    const { store, delEmployee } = useStore();
+    const { store, setStore, delEmployee } = useStore();
 
     const [dpt, setDpt] = useState("");
     const [des, setDes] = useState("");
+    const [search, setSearch] = useState("");
     // const [te, setTe] = useState("");
 
     const filteredData = store.data.filter(d => {
         return (
+            (
             (dpt === "" || d.dept === dpt) &&
-            (des === "" || d.designation === des)
+            (des === "" || d.designation === des || d.designation === search)
+            )
         );
     });
     const clearFilter = () => {
@@ -22,33 +29,54 @@ function Display() {
         setDes("");
     }
 
+    const ne = {"id": 11}
+    const add =() => {
+        setStore({...store, data: [...store.data, ne]})
 
+    }
     
     return (<>
         <h1>Employee Master</h1>
-        <div className='hcontainer'>
-        <div className='vcontainer'>
-            <div className="">
-                    <label>Department : </label>
-                    <select className='select-box' onChange={(e) => setDpt(e.target.value)} value={dpt}>
-                        <option value="">Select Department</option>
-                        {store.dept.map(d => <option key={d.id} value={d.dname}>{d.dname}</option>)}
-                    </select>
-                    
-            </div>
-            <div>
-                <label>Designation : </label>
-                <select className= 'select-box' onChange={(e) => setDes(e.target.value)} value = {des}>
-                    <option value=""> Select Designation </option>
-                    {store.designation.map(d=> <option key={d.id} value={d.dename}> {d.dename} </option>)}
-                </select>
-            </div>
-        </div>
-
-        <Button variant="danger" onClick={clearFilter}>
-            Clear
-        </Button>
-        </div>
+        <Container>
+            <Row>
+                <Col>
+                    <Row>
+                        <div className="">
+                            <label>Department : </label>
+                            <select className='select-box' onChange={(e) => setDpt(e.target.value)} value={dpt}>
+                                <option value="">Select Department</option>
+                                {store.dept.map(d => <option key={d.id} value={d.dname}>{d.dname}</option>)}
+                            </select>
+                        </div>
+                    </Row>
+                    <br></br>
+                    <Row>
+                        <div>
+                            <label>Designation : </label>
+                            <select className= 'select-box' onChange={(e) => setDes(e.target.value)} value = {des}>
+                                <option value=""> Select Designation </option>
+                                {store.designation.map(d=> <option key={d.id} value={d.dename}> {d.dename} </option>)}
+                            </select>
+                        </div>
+                    </Row>
+                </Col>
+                <Col>
+                    <Row><div><Button variant="warning" onClick={clearFilter}>Clear</Button></div></Row>
+                    <br></br>
+                    <Row><div><Button variant='primary' onClick={add}>Add</Button></div></Row>
+                </Col>
+                <Col>
+                    <input 
+                    type='search' 
+                    placeholder='Search Under Develop'
+                    value={search}
+                    onChange={(e)=>setSearch(e.target.value)}
+                    ></input>
+                    <br></br>
+                    <h4>{search}</h4>
+                </Col>
+            </Row>
+        </Container>
 {/*         
         <div className="selected-filters">
                 <h2>Selected Filters:</h2>
