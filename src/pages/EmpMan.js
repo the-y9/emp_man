@@ -4,12 +4,18 @@ import Table from 'react-bootstrap/Table'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { FormControl, InputGroup } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';  
+
+
 
 import { useStore } from '../store/data';
-
+import EmployeeTable from './EmpTable';
+import AddEmp from './AddEmp'
+import AdminManageModal from './AdminMan';
 
 function Display() {
-    const { store, setStore, delEmployee } = useStore();
+    const { store, delEmployee } = useStore();
 
     const [dpt, setDpt] = useState("");
     const [des, setDes] = useState("");
@@ -17,29 +23,33 @@ function Display() {
     // const [te, setTe] = useState("");
 
     const filteredData = store.data.filter(d => {
-        return (
-            (
+
+        // const searchData = (search === "" || d.ename === search)
+        const searchData = (search === "" 
+            || d.id.toString().includes(search.toLowerCase()) 
+            || d.ename.toLowerCase().includes(search.toLowerCase()) 
+            || d.dept.toLowerCase().includes(search.toLowerCase()) 
+            || d.designation.toLowerCase().includes(search.toLowerCase()) 
+            || d.tech_expertise.toLowerCase().includes(search.toLowerCase()) 
+                            );
+
+
+        const filterData = (
             (dpt === "" || d.dept === dpt) &&
-            (des === "" || d.designation === des || d.designation === search)
-            )
+            (des === "" || d.designation === des)
         );
+        return filterData && searchData
     });
     const clearFilter = () => {
         setDpt("");
         setDes("");
     }
-
-    const ne = {"id": 11}
-    const add =() => {
-        setStore({...store, data: [...store.data, ne]})
-
-    }
     
     return (<>
-        <h1>Employee Master</h1>
+        <h1>Employee Master</h1> 
         <Container>
             <Row>
-                <Col>
+                <Col md={6}>
                     <Row>
                         <div className="">
                             <label>Department : </label>
@@ -60,19 +70,26 @@ function Display() {
                         </div>
                     </Row>
                 </Col>
-                <Col>
-                    <Row><div><Button variant="warning" onClick={clearFilter}>Clear</Button></div></Row>
+                <Col md={2}>
+                    <Row><div><Button variant="warning" onClick={clearFilter}>Clear Filters</Button></div></Row>
                     <br></br>
-                    <Row><div><Button variant='primary' onClick={add}>Add</Button></div></Row>
+                    <Row><div><AddEmp /></div></Row>
                 </Col>
-                <Col>
-                    <input 
-                    type='search' 
-                    placeholder='Search Under Develop'
-                    value={search}
-                    onChange={(e)=>setSearch(e.target.value)}
-                    ></input>
-                    <br></br>
+                <Col md={1}></Col>
+                <Col md={3}>
+                {/* <Button variant="secondary">Admin Manage</Button> */}
+                <AdminManageModal />
+                    <InputGroup>
+                        <InputGroup.Text>
+                        <Icon.Search />
+                        </InputGroup.Text>
+                        <FormControl
+                        type="search"
+                        placeholder="Search"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </InputGroup>
                     <h4>{search}</h4>
                 </Col>
             </Row>
@@ -85,32 +102,7 @@ function Display() {
         </div> */}
 
         <div>
-        <Table striped bordered hover variant='dark' size='sm'>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Dept</th>
-                    <th>Designation</th>
-                    <th>Technical Expertise</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    {/* <td>0</td><td>dummy</td><td>dummyDept</td><td>dummyDes</td><td>None </td> */}
-                </tr>
-                {filteredData.map(d=> <tr key= {d.id}>
-                    <td>{d.id}</td>
-                    <td>{d.ename}</td>
-                    <td>{d.dept}</td>
-                    <td>{d.designation}</td>
-                    <td>{d.tech_expertise}</td>
-                    <td><Button variant="danger" onClick={() => delEmployee(d.id)}>Delete</Button></td>
-                </tr>)}
-                
-            </tbody>
-            </Table>
+            <EmployeeTable filteredData={filteredData} />
         </div>
     </>)
 }
