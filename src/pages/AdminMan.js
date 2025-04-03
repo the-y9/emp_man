@@ -42,6 +42,11 @@ export default function AdminManageModal() {
         }));
     };
 
+    const headers = store[selectedCategory].length > 0 
+        ? Object.keys(store[selectedCategory][0]) 
+        : ["id", "name"];
+
+
     return (<>
         {/* <Button variant="secondary">Admin Manage</Button> */}
         
@@ -67,8 +72,9 @@ export default function AdminManageModal() {
                 <Table striped bordered hover className="mt-3">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
+                            {headers.map((header) => (
+                                <th key={header}>{header.toUpperCase()}</th>
+                            ))}
                             <th>Action</th>
                         </tr>
                     </thead>
