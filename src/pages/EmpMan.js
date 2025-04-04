@@ -13,6 +13,12 @@ import { useStore } from '../store/data';
 import EmployeeTable from './EmpTable';
 import AddEmp from './AddEmp'
 import AdminManageModal from './AdminMan';
+import GenericTable from './GenericTable';
+import UpEmp from './EditEmp'
+
+
+// const columns =;
+
 
 function Display() {
     const { store, delEmployee } = useStore();
@@ -44,7 +50,16 @@ function Display() {
         setDpt("");
         setDes("");
     }
-    
+
+    const renderCustomActions = (item) => {
+        return (
+            <>
+                <Button variant="danger" onClick={() => delEmployee(item.id)}>Delete</Button>
+                <UpEmp data={ item } />
+            </>
+        );
+    }
+
     return (<>
         <h1>Employee Master</h1> 
         <Container>
@@ -102,7 +117,13 @@ function Display() {
         </div> */}
 
         <div>
-            <EmployeeTable filteredData={filteredData} />
+            {/* <EmployeeTable filteredData={filteredData} /> */}
+            <GenericTable 
+            colHeaders= {['id', 'ename', 'dept', 'designation', 'tech_expertise']}
+            data={filteredData} 
+            renderActions={renderCustomActions}
+            variant='dark'
+        />
         </div>
     </>)
 }

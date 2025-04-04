@@ -24,7 +24,7 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // Generate random data for employees
 const generateData = () => {
-    return Array.from({ length: 10 }, (_, index) => ({
+    return Array.from({ length: 5 }, (_, index) => ({
         id: index + 1,
         ename: `Employee${index + 1}`,
         dept: getRandomElement(dept).dname,

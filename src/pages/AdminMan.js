@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Table } from "react-bootstrap";
 import { useStore } from "../store/data";
+import GenericTable from "./GenericTable";
 
 export default function AdminManageModal() {
     const { store, setStore } = useStore();
@@ -9,7 +10,7 @@ export default function AdminManageModal() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
+    
     // State for tracking category and new input
     const [selectedCategory, setSelectedCategory] = useState("dept");
     const [newItem, setNewItem] = useState("");
@@ -69,29 +70,13 @@ export default function AdminManageModal() {
                     </Form.Select>
                 </Form.Group>
 
-                <Table striped bordered hover className="mt-3">
-                    <thead>
-                        <tr>
-                            {headers.map((header) => (
-                                <th key={header}>{header.toUpperCase()}</th>
-                            ))}
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {store[selectedCategory].map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.dname || item.dename || item.level}</td>
-                                <td>
-                                    <Button variant="danger" size="sm" onClick={() => deleteItem(item.id)}>
-                                        Delete
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                <GenericTable 
+                colHeaders={headers} 
+                data={store[selectedCategory]}  
+                renderActions={(item)=>(
+                    <Button variant="danger" size="sm" onClick={() => deleteItem(item.id)}>Delete</Button>
+                )}
+                />
 
                 <Form.Group className="mt-3">
                     <Form.Label>Add New</Form.Label>

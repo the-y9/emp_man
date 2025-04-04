@@ -7,7 +7,13 @@ import UpEmp from './EditEmp'
 export default function EmployeeTable( { filteredData } ){
     const { store, delEmployee } = useStore();
 
+    const log = () => {
+        [...filteredData.keys()].map(i => console.log(i));
+    }
+
     return (<>
+            <Button onClick={() => log()}>Log Data</Button>
+
         <Table striped bordered hover variant='dark' size='sm'>
         <thead>
             <tr>
@@ -30,7 +36,6 @@ export default function EmployeeTable( { filteredData } ){
                 <td>{d.designation}</td>
                 <td>{d.tech_expertise}</td>
                 <td className="d-flex gap-2 mb-2"><Button variant="danger" onClick={() => delEmployee(d.id)}>Delete</Button>
-                    {/* <Button variant="success" onClick={() => console.log(d.id)}>Update</Button> */}
                     <UpEmp data={ d } />
                 </td>
 
